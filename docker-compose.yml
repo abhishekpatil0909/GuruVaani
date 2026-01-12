@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ChangeMe
+      MYSQL_DATABASE: guruvani_dev
+      MYSQL_USER: guruvani
+      MYSQL_PASSWORD: guruvani_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: src/Guruvani.Api/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DEFAULT_CONNECTION=server=db;port=3306;database=guruvani_dev;user=guruvani;password=guruvani_pass
+    ports:
+      - "5000:80"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5000
+    depends_on:
+      - api
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:

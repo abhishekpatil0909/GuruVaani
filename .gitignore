@@ -1,0 +1,32 @@
+# Visual Studio / .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Rider
+.idea/
+
+# OS
+.DS_Store
+
+# Node
+node_modules/
+
+# Logs
+logs
+*.log
+
+# Build outputs
+dist/
+**/bin/
+**/obj/
+
+# dotenv
+.env
+.env.local
+
+# NuGet
+*.nupkg
+.nuget/
