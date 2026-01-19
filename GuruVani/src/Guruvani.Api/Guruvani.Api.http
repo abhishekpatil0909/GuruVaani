@@ -1,0 +1,6 @@
+@Guruvani.Api_HostAddress = http://localhost:5209
+
+GET {{Guruvani.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
